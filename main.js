@@ -94,7 +94,7 @@ const shuffleArray = (array) => {
 const MIN_POSITION = -100;
 const MAX_POSITION = -1000;
 const NUM_CARS = 20;
-const MIN_DISTANCE = 200; // Minimum distance between pairs of cars
+const MIN_DISTANCE = 250; // Minimum distance between pairs of cars
 const LANE_COUNT = 2; // Number of lanes
 
 const generateTraffic = () => {
