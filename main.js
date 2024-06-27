@@ -1,5 +1,5 @@
 const carCanvas = document.getElementById("carCanvas");
-carCanvas.width = 200;
+carCanvas.width = 400;
 const networkCanvas = document.getElementById("networkCanvas");
 networkCanvas.width = 300;
 const verticalButtons = document.getElementById("verticalButtons");
@@ -49,6 +49,7 @@ let aiPlay = document.getElementById("ai_play");
 aiPlay.addEventListener("click", () => {
   startGame.disabled = true;
   maxSpeed.disabled = true;
+  maxSpeed.style.cursor = "not-allowed";
   instruction.style.display = "none";
   networkCanvas.style.display = "block";
   verticalButtons.style.display = "flex";
@@ -98,8 +99,8 @@ const shuffleArray = (array) => {
 
 const MIN_POSITION = -100;
 const MAX_POSITION = -500;
-const NUM_CARS = 20;
-const MIN_DISTANCE = 150; // Minimum distance between pairs of cars
+const NUM_CARS = 200;
+const MIN_DISTANCE = 250; // Minimum distance between pairs of cars
 const LANE_COUNT = 3; // Number of lanes
 
 const generateTraffic = () => {
@@ -116,8 +117,8 @@ const generateTraffic = () => {
     const newCar = new Car(
       road.getLaneCenter(getRandomLane()),
       pos.position,
-      30,
-      50,
+      carCanvas.width / 6.67,
+      carCanvas.width / 4,
       "DUMMY",
       2,
       getRandomColor()
@@ -173,7 +174,14 @@ function generateCars(N, maxSpeed) {
   const cars = [];
   for (let i = 1; i <= N; i++) {
     cars.push(
-      new Car(road.getLaneCenter(1), 100, 30, 50, controlType, maxSpeed)
+      new Car(
+        road.getLaneCenter(1),
+        100,
+        carCanvas.width / 6.67,
+        carCanvas.width / 4,
+        controlType,
+        maxSpeed
+      )
     );
   }
   return cars;

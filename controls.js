@@ -19,37 +19,53 @@ class Controls {
     document.onkeydown = (event) => {
       switch (event.key) {
         case "ArrowLeft":
+        case "A":
+        case "a":
           this.left = true;
           break;
         case "ArrowRight":
+        case "D":
+        case "d":
           this.right = true;
           break;
         case "ArrowUp":
+        case "W":
+        case "w":
           this.forward = true;
           break;
         case "ArrowDown":
+        case "S":
+        case "s":
           this.reverse = true;
           break;
       }
-        // console.table(this);
+      // console.table(this);
     };
 
     document.onkeyup = (event) => {
       switch (event.key) {
         case "ArrowLeft":
+        case "A":
+        case "a":
           this.left = false;
           break;
         case "ArrowRight":
+        case "D":
+        case "d":
           this.right = false;
           break;
         case "ArrowUp":
+        case "W":
+        case "w":
           this.forward = false;
           break;
         case "ArrowDown":
+        case "S":
+        case "s":
           this.reverse = false;
           break;
       }
-        // console.table(this);
+      // console.table(this);
     };
   }
 }
