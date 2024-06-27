@@ -42,9 +42,14 @@ startGame.addEventListener("click", () => {
 let aiPlay = document.getElementById("ai_play");
 
 aiPlay.addEventListener("click", () => {
+  startGame.disabled = true;
+  maxSpeed.disabled = true;
+  instruction.style.display = "none";
+  networkCanvas.style.display = "block";
+  verticalButtons.style.display = "flex";
   controlType = "AI";
-  const maxSpeed = getMaxSpeed();
-  cars = generateCars(N, maxSpeed);
+  const currMaxSpeed = getMaxSpeed();
+  cars = generateCars(N, currMaxSpeed);
   bestCar = cars[0];
 
   if (localStorage.getItem("bestBrain")) {
