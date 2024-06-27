@@ -1,5 +1,5 @@
 class Car {
-  constructor(x, y, width, height, controlType, maxSpeed = 3, color = "blue") {
+  constructor(x, y, width, height, controlType, maxSpeed, color = "blue") {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -12,9 +12,15 @@ class Car {
     this.angle = 0;
     this.damaged = false;
 
-    this.useBrain = controlType == "AI";
+    this.initialX = x; // Store initial position for retry
+    this.initialY = y;
+    this.lastPosition = { x: x, y: y }; // Track last position for movement detection
+    this.movingForward = false; // Track forward movement
 
-    if (controlType != "DUMMY") {
+    this.useBrain = controlType == "AI";
+    this.controlType = controlType;
+
+    if (controlType != "DUMMY" && controlType != "KEYS") {
       this.sensor = new Sensor(this);
       this.brain = new NeuralNetwork([this.sensor.rayCount, 6, 4]);
     }
@@ -41,9 +47,26 @@ class Car {
 
   update(roadBorders, traffic) {
     if (!this.damaged) {
+      // console.log(this.speed)
       this.#move();
       this.polygon = this.#createPolygon();
       this.damaged = this.#accessDamaged(roadBorders, traffic);
+
+      // Track movement direction
+      if (this.x !== this.lastPosition.x || this.y !== this.lastPosition.y) {
+        this.movingForward = true;
+        this.lastPosition = { x: this.x, y: this.y };
+      } else {
+        this.movingForward = false;
+      }
+    } else {
+      // location.reload();
+      this.retry();
+    }
+
+    // Additional check for standing still or reversing
+    if (this.controlType === "AI" && !this.damaged && !this.movingForward) {
+      this.retry(); // Retry if standing still or reversing
     }
 
     if (this.sensor) {
@@ -53,7 +76,7 @@ class Car {
       );
 
       const outputs = NeuralNetwork.feedForward(offsets, this.brain);
-      // console.log(outputs);
+      console.log(outputs);
 
       if (this.useBrain) {
         this.controls.forward = outputs[0];
@@ -61,6 +84,22 @@ class Car {
         this.controls.right = outputs[2];
         this.controls.reverse = outputs[3];
       }
+    }
+  }
+
+  retry() {
+    // Reset car to initial position and state
+    this.x = this.initialX;
+    this.y = this.initialY;
+    this.speed = 0;
+    this.angle = 0;
+    this.damaged = false; // Reset damage flag
+    this.movingForward = false; // Reset movement tracking
+
+    // Additional reset logic if needed
+    // Example: Reset neural network or other AI-related state
+    if (this.controlType === "AI" && this.brain) {
+      this.brain = new NeuralNetwork([this.sensor.rayCount, 6, 4]); // Example reset of neural network
     }
   }
 
@@ -124,11 +163,19 @@ class Car {
       this.speed -= this.friction;
     }
 
+    // Ensure car does not reverse in AI mode
+    if (this.speed < 0 && this.controlType == "AI") {
+      this.speed = 0;
+    }
+
     if (this.speed < 0) {
       this.speed += this.friction;
     }
 
-    if (Math.abs(this.speed) < this.friction) {
+    // Apply friction
+    if (Math.abs(this.speed) > this.friction) {
+      this.speed -= this.friction * Math.sign(this.speed);
+    } else {
       this.speed = 0;
     }
 

@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  padding: 0 15px;
   background-color: darkgray;
   overflow: hidden;
   display: flex;
@@ -7,16 +8,99 @@ body {
   align-items: center;
 }
 
-#verticalButtons {
+#verticalButtons,
+#menuButton {
   display: flex;
   flex-direction: column;
+}
+
+#startGame {
+  background-color: green;
+  color: white;
+  padding: 10px;
+  box-shadow: 3px 4px 2px lightgreen;
+}
+
+#startGame:active {
+  translate: 2px 2px;
+}
+
+#startGame:hover {
+  background-color: greenyellow;
+  color: black;
+}
+
+#ai_play {
+  background-color: blue;
+  color: white;
+  padding: 10px;
+  box-shadow: 4px 5px 2px black;
+}
+
+#ai_play:active {
+  translate: 2px 2px;
+}
+
+#manual_play {
+  background-color: yellowgreen;
+  color: white;
+  padding: 10px;
+  box-shadow: 4px 5px 2px black;
+}
+
+#manual_play:active {
+  translate: 2px 2px;
+}
+
+#restart {
+  background-color: red;
+  color: white;
+  padding: 10px;
+  box-shadow: 4px 5px 2px black;
+}
+
+#speedField {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#menuButton {
+  background-color: darkorchid;
+  padding: 10px;
+  border-radius: 20px;
+  margin: 20px;
+  width: 15em;
+}
+
+#menuButton #ai_play:hover {
+  background-color: lightblue;
+  color: black;
+}
+
+#menuButton #manual_play:hover {
+  background-color: yellow;
+  color: black;
+}
+
+#menuButton #restart:hover {
+  background-color: tomato;
+  color: black;
+}
+
+#maxSpeedField {
+  width: 100%;
+  border: none;
+  border-radius: 20px;
+  padding: 10px;
+  outline: none;
 }
 
 button {
   border: none;
   border-radius: 5px;
   padding: 5px 5px 7px 5px;
-  margin: 2px;
+  margin: 10px;
   cursor: pointer;
 }
 
@@ -30,4 +114,8 @@ button:hover {
 
 #networkCanvas {
   background-color: black;
+}
+
+#instruction {
+  margin-bottom: 0;
 }

@@ -3,9 +3,43 @@
   <head>
     <title>Self-driving Car Simulation</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="shortcut icon" href="/assets/favicon.ico" >
+    <link rel="shortcut icon" href="/assets/favicon.ico" />
   </head>
   <body>
+    <div id="menuButton">
+      <h3 id="instruction">
+        You can either play it or let AI play.
+        To play, Enter max speed before hitting
+        <span style="color: white">Start</span> or Select
+        <span style="color: white">Start</span>
+        with a default speed of 3.
+      </h3>
+      <p
+        style="
+          color: red;
+          background-color: white;
+          padding: 10px;
+          border-radius: 10px;
+        "
+      >
+        ⚠️ The program will automatically restart when a car damage happens
+      </p>
+      <div id="speedField">
+        <input
+          type="number"
+          min="3"
+          max="10"
+          id="maxSpeedField"
+          placeholder="Max speed (3-10)"
+        />
+        <button type="button" id="startGame">Start</button>
+      </div>
+
+      <button id="ai_play">AI play</button>
+      <!-- <button id="manual_play">Manual play</button> -->
+      <button id="restart" onclick="location.reload()">Restart</button>
+    </div>
+
     <canvas id="carCanvas"></canvas>
     <div id="verticalButtons">
       <button onclick="save()">💾</button>
