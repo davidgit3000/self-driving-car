@@ -60,6 +60,8 @@ aiPlay.addEventListener("click", () => {
       }
     }
   }
+
+  resetTraffic(); // Reset traffic before starting
   start();
 });
 
@@ -91,32 +93,41 @@ const shuffleArray = (array) => {
 
 const MIN_POSITION = -100;
 const MAX_POSITION = -1000;
-const NUM_CARS = 100;
-const MIN_DISTANCE = 250; // Minimum distance between pairs of cars
+const NUM_CARS = 20;
+const MIN_DISTANCE = 200; // Minimum distance between pairs of cars
 const LANE_COUNT = 2; // Number of lanes
 
-const positions = generatePositions(
-  NUM_CARS,
-  MIN_POSITION,
-  MAX_POSITION,
-  LANE_COUNT,
-  MIN_DISTANCE
-);
-shuffleArray(positions);
-
-for (const pos of positions) {
-  traffic.push(
-    new Car(
-      road.getLaneCenter(getRandomLane()),
-      pos.position,
-      30,
-      50,
-      "DUMMY",
-      2,
-      getRandomColor()
-    )
+const generateTraffic = () => {
+  const positions = generatePositions(
+    NUM_CARS,
+    MIN_POSITION,
+    MAX_POSITION,
+    LANE_COUNT,
+    MIN_DISTANCE
   );
-}
+  shuffleArray(positions);
+
+  for (const pos of positions) {
+    traffic.push(
+      new Car(
+        road.getLaneCenter(getRandomLane()),
+        pos.position,
+        30,
+        50,
+        "DUMMY",
+        2,
+        getRandomColor()
+      )
+    );
+  }
+};
+
+const resetTraffic = () => {
+  traffic.length = 0; // Clear the existing traffic array
+  generateTraffic(); // Regenerate the traffic cars
+};
+
+generateTraffic(); // Initial traffic generation
 
 function save() {
   localStorage.setItem("bestBrain", JSON.stringify(bestCar.brain));
@@ -156,6 +167,24 @@ function animate(time) {
   bestCar = cars.find((c) => c.y == Math.min(...cars.map((c) => c.y)));
   if (!bestCar) {
     console.error("No best car found.");
+    return;
+  }
+
+  if (bestCar.damaged) {
+    console.log("Best car is damaged. Resetting traffic and restarting...");
+    resetTraffic();
+    const maxSpeed = getMaxSpeed();
+    cars = generateCars(N, maxSpeed);
+    bestCar = cars[0];
+    if (localStorage.getItem("bestBrain")) {
+      for (let i = 0; i < cars.length; i++) {
+        cars[i].brain = JSON.parse(localStorage.getItem("bestBrain"));
+        if (i != 0) {
+          NeuralNetwork.mutate(cars[i].brain, 0.1);
+        }
+      }
+    }
+    start();
     return;
   }
 
