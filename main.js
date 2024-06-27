@@ -4,6 +4,9 @@ const networkCanvas = document.getElementById("networkCanvas");
 networkCanvas.width = 300;
 const verticalButtons = document.getElementById("verticalButtons");
 
+const ai_mode = document.getElementById("ai_mode");
+const manual_mode = document.getElementById("manual_mode");
+
 const carCtx = carCanvas.getContext("2d");
 const networkCtx = networkCanvas.getContext("2d");
 
@@ -35,6 +38,8 @@ let controlType = "KEYS";
 startGame.addEventListener("click", () => {
   networkCanvas.style.display = "none";
   verticalButtons.style.display = "none";
+  ai_mode.style.display = "none";
+  manual_mode.style.display = "block";
 
   instruction.innerHTML =
     "You can adjust the speed while playing too. Input the speed and select Start";
@@ -53,6 +58,9 @@ aiPlay.addEventListener("click", () => {
   instruction.style.display = "none";
   networkCanvas.style.display = "block";
   verticalButtons.style.display = "flex";
+  ai_mode.style.display = "block";
+  manual_mode.style.display = "none";
+
   controlType = "AI";
   const currMaxSpeed = getMaxSpeed();
   cars = generateCars(N, currMaxSpeed);
