@@ -15,7 +15,12 @@ const instruction = document.getElementById("instruction");
 
 const getMaxSpeed = () => {
   let maxSpeedVal = parseInt(maxSpeed.value, 10);
-  if (isNaN(maxSpeedVal) || maxSpeedVal < 3 || maxSpeedVal > 10) {
+  if (
+    isNaN(maxSpeedVal) ||
+    maxSpeedVal < 3 ||
+    maxSpeedVal > 10 ||
+    controlType == "AI"
+  ) {
     maxSpeedVal = 3; // Default max speed
   }
   console.log(maxSpeedVal);
@@ -92,10 +97,10 @@ const shuffleArray = (array) => {
 };
 
 const MIN_POSITION = -100;
-const MAX_POSITION = -1000;
+const MAX_POSITION = -500;
 const NUM_CARS = 20;
-const MIN_DISTANCE = 250; // Minimum distance between pairs of cars
-const LANE_COUNT = 2; // Number of lanes
+const MIN_DISTANCE = 150; // Minimum distance between pairs of cars
+const LANE_COUNT = 3; // Number of lanes
 
 const generateTraffic = () => {
   const positions = generatePositions(
@@ -108,18 +113,37 @@ const generateTraffic = () => {
   shuffleArray(positions);
 
   for (const pos of positions) {
-    traffic.push(
-      new Car(
-        road.getLaneCenter(getRandomLane()),
-        pos.position,
-        30,
-        50,
-        "DUMMY",
-        2,
-        getRandomColor()
-      )
+    const newCar = new Car(
+      road.getLaneCenter(getRandomLane()),
+      pos.position,
+      30,
+      50,
+      "DUMMY",
+      2,
+      getRandomColor()
     );
+
+    if (!isCollidingWithOtherCars(newCar)) {
+      traffic.push(newCar);
+    }
   }
+};
+
+const isCollidingWithOtherCars = (car) => {
+  for (let i = 0; i < traffic.length; i++) {
+    if (isColliding(car, traffic[i])) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const isColliding = (car1, car2) => {
+  const dx = car1.x - car2.x;
+  const dy = car1.y - car2.y;
+  const distance = Math.sqrt(dx * dx + dy * dy);
+  const minDistance = (car1.width + car2.width) / 2 + MIN_DISTANCE;
+  return distance < minDistance;
 };
 
 const resetTraffic = () => {

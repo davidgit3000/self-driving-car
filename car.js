@@ -16,6 +16,7 @@ class Car {
     this.initialY = y;
     this.lastPosition = { x: x, y: y }; // Track last position for movement detection
     this.movingForward = false; // Track forward movement
+    this.initialMaxSpeed = maxSpeed;
 
     this.useBrain = controlType == "AI";
     this.controlType = controlType;
@@ -76,7 +77,7 @@ class Car {
       );
 
       const outputs = NeuralNetwork.feedForward(offsets, this.brain);
-      console.log(outputs);
+      // console.log(outputs);
 
       if (this.useBrain) {
         this.controls.forward = outputs[0];
@@ -95,6 +96,7 @@ class Car {
     this.angle = 0;
     this.damaged = false; // Reset damage flag
     this.movingForward = false; // Reset movement tracking
+    this.maxSpeed = this.initialMaxSpeed;
 
     // Additional reset logic if needed
     // Example: Reset neural network or other AI-related state
