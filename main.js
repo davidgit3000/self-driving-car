@@ -68,7 +68,7 @@ const generatePositions = (count, min, max, laneCount, minDistance) => {
     for (let i = 0; i < count / laneCount; i++) {
       const position1 = currentPos;
       const position2 =
-        currentPos - minDistance - Math.floor(Math.random() * 200); // Randomize the distance a bit
+        currentPos - minDistance - Math.floor(Math.random() * 100); // Randomize the distance a bit
       positions.push({ lane, position: position1 });
       positions.push({ lane, position: position2 });
       currentPos = position2 - minDistance;
