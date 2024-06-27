@@ -2,11 +2,12 @@ const carCanvas = document.getElementById("carCanvas");
 carCanvas.width = 200;
 const networkCanvas = document.getElementById("networkCanvas");
 networkCanvas.width = 300;
+const verticalButtons = document.getElementById("verticalButtons");
 
 const carCtx = carCanvas.getContext("2d");
 const networkCtx = networkCanvas.getContext("2d");
 
-const road = new Road(carCanvas.width / 2, carCanvas.width * 0.9);
+let road = new Road(carCanvas.width / 2, carCanvas.width * 0.9);
 
 const maxSpeed = document.getElementById("maxSpeedField");
 const startGame = document.getElementById("startGame");
@@ -27,6 +28,9 @@ let bestCar;
 let controlType = "KEYS";
 
 startGame.addEventListener("click", () => {
+  networkCanvas.style.display = "none";
+  verticalButtons.style.display = "none";
+
   instruction.innerHTML =
     "You can adjust the speed while playing too. Input the speed and select Start";
   const maxSpeed = getMaxSpeed();
